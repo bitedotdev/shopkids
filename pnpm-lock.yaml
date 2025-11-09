@@ -38,6 +38,10 @@ importers:
       vue-router:
         specifier: ^4.6.3
         version: 4.6.3(vue@3.5.24(typescript@5.9.3))
+    devDependencies:
+      '@iconify-json/fluent':
+        specifier: ^1.2.34
+        version: 1.2.34
 
 packages:
 
@@ -434,6 +438,9 @@ packages:
   '@humanwhocodes/retry@0.4.3':
     resolution: {integrity: sha512-bV0Tgo9K4hfPCek+aMAn81RppFKv2ySDQeMoSZuvTASywNTnVJCArCZE2FWqpvIatKu7VMRLWlR1EazvVhDyhQ==}
     engines: {node: '>=18.18'}
+
+  '@iconify-json/fluent@1.2.34':
+    resolution: {integrity: sha512-TXiotS96YhSf6urBmMBrBPOL2OJJghiv+FhLsd3J0PePZJEq460eg/LrnfVqKqEdLc38C3AesTNJAM8iB4N5UQ==}
 
   '@iconify/collections@1.0.615':
     resolution: {integrity: sha512-OBBvPu0CAdl042CfDBxt4zWVUxTwnK2kRBatab/y8d/t2XML9QGrA8A2hpaIFpYPPILSs6a4+gBkAGVXSKkBsQ==}
@@ -4722,6 +4729,10 @@ snapshots:
   '@humanwhocodes/module-importer@1.0.1': {}
 
   '@humanwhocodes/retry@0.4.3': {}
+
+  '@iconify-json/fluent@1.2.34':
+    dependencies:
+      '@iconify/types': 2.0.0
 
   '@iconify/collections@1.0.615':
     dependencies:
