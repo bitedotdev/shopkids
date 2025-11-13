@@ -76,7 +76,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
   <div>
     <TheNav />
     <section class="container p-6 md:p-12">
-      <Banner title="Crear producto" />
+      <UPageHeader title="Crear producto" />
 
       <UForm :schema="schema" :state="state" class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-3" @submit="onSubmit">
         <div class="flex flex-col gap-6 lg:col-span-2">
@@ -89,11 +89,11 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
             <div class="space-y-4">
               <UFormField label="Product Name" name="name" :required="true">
-                <UInput v-model="state.name" placeholder="Product Name" />
+                <UInput v-model="state.name" placeholder="Product Name" class="w-full" />
               </UFormField>
 
               <UFormField label="Description" name="description">
-                <UTextarea v-model="state.description" :rows="6" />
+                <UTextarea v-model="state.description" :rows="6" class="w-full" />
                 <template #description>
                   Set a description to the product for better visibility.
                 </template>
@@ -122,7 +122,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
             <div class="space-y-4">
               <UFormField label="Base Price" name="basePrice" :required="true">
-                <UInput v-model.number="state.basePrice" type="number" placeholder="Product price" />
+                <UInput v-model.number="state.basePrice" type="number" placeholder="Product price" class="w-full" />
               </UFormField>
 
               <UFormField label="Discount Type" name="discountType">
@@ -131,10 +131,10 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <UFormField label="Tax Class" name="taxClass" :required="true">
-                  <USelect v-model="state.taxClass" :options="taxOptions" />
+                  <USelect v-model="state.taxClass" :options="taxOptions" class="w-full" />
                 </UFormField>
                 <UFormField label="VAT Amount (%)" name="vatAmount" :required="true">
-                  <UInput v-model.number="state.vatAmount" type="number" />
+                  <UInput v-model.number="state.vatAmount" type="number" class="w-full" />
                 </UFormField>
               </div>
             </div>
@@ -150,10 +150,12 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
             </template>
 
             <UFormField label="Product thumbnail" name="thumbnailFile">
-              <FormFileUpload
+              <UFileUpload
                 v-model="thumbnailFile"
-                description="*.png, *.jpg, *.jpeg"
-                accept="image/png, image/jpeg, image/jpg"
+                icon="i-lucide-image"
+                label="Drop your image here"
+                description="SVG, PNG, JPG or GIF (max. 2MB)"
+                class="w-full min-h-48"
               />
             </UFormField>
           </UCard>
@@ -177,7 +179,11 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
             </template>
             <div class="space-y-4">
               <UFormField label="Categories" name="category">
-                <USelect v-model="state.category" :options="[{ label: 'Select an option', value: null }, { label: 'Electronics', value: 'electronics' }]" />
+                <USelect
+                  v-model="state.category"
+                  :options="[{ label: 'Select an option', value: null }, { label: 'Electronics', value: 'electronics' }]"
+                  class="w-full"
+                />
               </UFormField>
 
               <UButton label="+ Create New Category" variant="link" :padded="false" />
@@ -189,6 +195,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                   creatable
                   searchable
                   placeholder="Select or add tags..."
+                  class="w-full"
                 />
               </UFormField>
             </div>
@@ -201,7 +208,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
               </h3>
             </template>
             <UFormField label="Select a product template" name="template">
-              <USelect v-model="state.template" :options="[{ label: 'Default template', value: 'default' }]" />
+              <USelect v-model="state.template" :options="[{ label: 'Default template', value: 'default' }]" class="w-full" />
             </UFormField>
           </UCard>
         </div>
