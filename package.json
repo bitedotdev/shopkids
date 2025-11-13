@@ -24,6 +24,8 @@
     "vue-router": "^4.6.3"
   },
   "devDependencies": {
-    "@iconify-json/fluent": "^1.2.34"
+    "@antfu/eslint-config": "^6.2.0",
+    "@iconify-json/fluent": "^1.2.34",
+    "eslint-plugin-format": "^1.0.2"
   }
 }
