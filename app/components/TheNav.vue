@@ -21,7 +21,7 @@
         </h4>
         <div class="flex items-center justify-between">
           <small class="text-gray-500">Ver perfil</small>
-          <NuxtIcon name="fluent:chevron-down-16-filled" />
+          <UIcon name="fluent:chevron-down-16-filled" />
         </div>
       </div>
     </div>

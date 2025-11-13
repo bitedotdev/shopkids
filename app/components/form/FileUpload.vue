@@ -81,11 +81,11 @@ function clearFile() {
 
 <template>
   <div>
-    <label v-if="label" class="mb-1 block text-sm font-medium text-gray-700">
+    <label v-if="label" class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-200">
       {{ label }}
     </label>
 
-    <div v-if="previewUrl" class="relative rounded-lg border border-gray-300">
+    <div v-if="previewUrl" class="relative rounded-lg border border-gray-300 dark:border-gray-700">
       <img :src="previewUrl" alt="Thumbnail preview" class="h-auto w-full rounded-lg object-cover">
       <button
         type="button"
@@ -113,15 +113,19 @@ function clearFile() {
     <div
       v-else
       class="flex h-48 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed transition-colors"
-      :class="isDragging ? 'border-blue-500 bg-blue-50' : 'border-gray-300 hover:border-blue-400'"
+      :class="
+        isDragging
+          ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/50'
+          : 'border-gray-300 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-600'
+      "
       @click="triggerFileInput"
       @dragover.prevent="onDragOver"
       @dragleave.prevent="onDragLeave"
       @drop.prevent="onDrop"
     >
       <svg
-        class="h-12 w-12 text-gray-400"
-        :class="isDragging ? 'text-blue-500' : ''"
+        class="h-12 w-12 text-gray-400 dark:text-gray-600"
+        :class="isDragging ? 'text-blue-500 dark:text-blue-400' : ''"
         stroke="currentColor"
         fill="none"
         viewBox="0 0 48 48"
@@ -134,10 +138,13 @@ function clearFile() {
           stroke-linejoin="round"
         />
       </svg>
-      <span class="mt-2 text-sm text-gray-500" :class="isDragging ? 'text-blue-600' : ''">
+      <span
+        class="mt-2 text-sm text-gray-500 dark:text-gray-400"
+        :class="isDragging ? 'text-blue-600 dark:text-blue-300' : ''"
+      >
         Arrastra o haz clic para subir
       </span>
-      <p class="mt-1 text-xs text-gray-400">
+      <p class="mt-1 text-xs text-gray-400 dark:text-gray-500">
         {{ description }}
       </p>
     </div>

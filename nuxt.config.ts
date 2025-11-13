@@ -6,7 +6,6 @@ export default defineNuxtConfig({
     '@nuxt/eslint',
     '@nuxt/ui',
     '@nuxt/fonts',
-    '@nuxt/icon',
     '@nuxt/image',
   ],
   devtools: { enabled: true },
@@ -21,8 +20,5 @@ export default defineNuxtConfig({
     config: {
       standalone: false,
     },
-  },
-  icon: {
-    componentName: 'NuxtIcon',
   },
 })

@@ -1,35 +1,75 @@
 <script setup lang="ts">
-interface Product {
-  name: string
-  description: string
-  basePrice: number | null
-  discountType: 'none' | 'percentage' | 'fixed'
-  taxClass: string | null
-  vatAmount: number | null
-  category: string | null
-  tags: string[]
-  status: 'published' | 'draft'
-  template: string
-}
+import type { FormError, FormSubmitEvent } from '#ui/types'
+import { z } from 'zod'
 
-const thumbnailFile = ref<File | null>(null)
+const schema = z.object({
+  name: z.string().min(1, 'El nombre es requerido'),
+  description: z.string().optional(),
+  basePrice: z.number().min(0, 'El precio debe ser positivo'),
+  discountType: z.enum(['none', 'percentage', 'fixed']),
+  taxClass: z.string().min(1, 'La clase de impuesto es requerida'),
+  vatAmount: z.number().min(0, 'El IVA debe ser positivo'),
+  category: z.string().nullable(),
+  tags: z.array(z.string()).optional(),
+  status: z.enum(['published', 'draft']),
+  template: z.string(),
+})
 
-const product = reactive<Product>({
-  name: '',
-  description: '',
-  basePrice: null,
+// 2. Definimos el tipo basado en el esquema
+type Schema = z.output<typeof schema>
+
+// 3. Definimos el estado reactivo del formulario
+const state = reactive<Partial<Schema>>({
+  name: undefined,
+  description: undefined,
+  basePrice: undefined,
   discountType: 'none',
-  taxClass: null,
-  vatAmount: null,
+  taxClass: undefined,
+  vatAmount: undefined,
   category: null,
   tags: [],
   status: 'published',
   template: 'default',
 })
 
-function handleSave() {
-  console.log('Producto a guardar:', product)
+// 4. Estado para los archivos (no forman parte del `state` de UForm)
+const thumbnailFile = ref<File | null>(null)
+const mediaFiles = ref(null)
+
+// 5. Opciones para los selects y radios
+const discountOptions = [
+  { label: 'No Discount', value: 'none' },
+  { label: 'Percentage %', value: 'percentage' },
+  { label: 'Fixed Price', value: 'fixed' },
+]
+
+const taxOptions = [
+  { label: 'Select an option', value: '' },
+  { label: 'Taxable Goods', value: 'taxable' },
+  { label: 'No Tax', value: 'none' },
+]
+
+const statusOptions = [
+  { label: 'Published', value: 'published' },
+  { label: 'Draft', value: 'draft' },
+]
+
+// 6. Handler para el submit
+async function onSubmit(event: FormSubmitEvent<Schema>) {
+  // La validación se ejecuta automáticamente
+  console.log('Formulario válido:', event.data)
+  console.log('Archivo de Thumbnail:', thumbnailFile.value)
+  console.log('Archivos de Media:', mediaFiles.value)
+
+  // Aquí construirías tu FormData para enviar a la API
 }
+
+// Opcional: validación manual si no se usa Zod
+// const validate = (state: any): FormError[] => {
+//   const errors = []
+//   if (!state.name) errors.push({ path: 'name', message: 'Required' })
+//   return errors
+// }
 </script>
 
 <template>
@@ -38,148 +78,139 @@ function handleSave() {
     <section class="container p-6 md:p-12">
       <Banner title="Crear producto" />
 
-      <form class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-3" @submit.prevent="handleSave">
+      <UForm :schema="schema" :state="state" class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-3" @submit="onSubmit">
         <div class="flex flex-col gap-6 lg:col-span-2">
-          <FormSection title="General">
-            <FormInput
-              v-model="product.name"
-              label="Product Name"
-              placeholder="Product Name"
-              description="A product name is required and recommended to be unique."
-              :required="true"
-            />
-            <div class="mt-4">
-              <label class="mb-1 block text-sm font-medium text-gray-700">Description</label>
-              <textarea
-                v-model="product.description"
-                rows="6"
-                class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-              />
-              <p class="mt-1 text-xs text-gray-500">
-                Set a description to the product for better visibility.
-              </p>
-            </div>
-          </FormSection>
+          <UCard>
+            <template #header>
+              <h3 class="text-lg font-semibold leading-6">
+                General
+              </h3>
+            </template>
 
-          <FormSection title="Media">
-            <div class="flex h-32 w-full items-center justify-center rounded-lg border-2 border-dashed border-gray-300 text-gray-500">
-              <span class="flex items-center gap-2">
+            <div class="space-y-4">
+              <UFormField label="Product Name" name="name" :required="true">
+                <UInput v-model="state.name" placeholder="Product Name" />
+              </UFormField>
 
-                Drop files here or click to upload.
-              </span>
+              <UFormField label="Description" name="description">
+                <UTextarea v-model="state.description" :rows="6" />
+                <template #description>
+                  Set a description to the product for better visibility.
+                </template>
+              </UFormField>
             </div>
-          </FormSection>
+          </UCard>
 
-          <FormSection title="Pricing">
-            <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <FormInput
-                v-model.number="product.basePrice"
-                label="Base Price"
-                placeholder="Product price"
-                type="number"
-                :required="true"
-              />
+          <UCard>
+            <template #header>
+              <h3 class="text-lg font-semibold leading-6">
+                Media
+              </h3>
+            </template>
+
+            <UFormField label="Media files" name="mediaFiles">
+              <UFileUpload v-model="mediaFiles" multiple />
+            </UFormField>
+          </UCard>
+
+          <UCard>
+            <template #header>
+              <h3 class="text-lg font-semibold leading-6">
+                Pricing
+              </h3>
+            </template>
+
+            <div class="space-y-4">
+              <UFormField label="Base Price" name="basePrice" :required="true">
+                <UInput v-model.number="state.basePrice" type="number" placeholder="Product price" />
+              </UFormField>
+
+              <UFormField label="Discount Type" name="discountType">
+                <URadioGroup v-model="state.discountType" :options="discountOptions" />
+              </UFormField>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <UFormField label="Tax Class" name="taxClass" :required="true">
+                  <USelect v-model="state.taxClass" :options="taxOptions" />
+                </UFormField>
+                <UFormField label="VAT Amount (%)" name="vatAmount" :required="true">
+                  <UInput v-model.number="state.vatAmount" type="number" />
+                </UFormField>
+              </div>
             </div>
-            <FormRadioGroup
-              v-model="product.discountType"
-              label="Discount Type"
-              :options="[
-                { label: 'No Discount', value: 'none' },
-                { label: 'Percentage %', value: 'percentage' },
-                { label: 'Fixed Price', value: 'fixed' },
-              ]"
-            />
-            <div class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
-              <FormSelect
-                v-model="product.taxClass"
-                label="Tax Class"
-                :required="true"
-                :options="[
-                  { label: 'Select an option', value: null },
-                  { label: 'Taxable Goods', value: 'taxable' },
-                  { label: 'No Tax', value: 'none' },
-                ]"
-              />
-              <FormInput
-                v-model.number="product.vatAmount"
-                label="VAT Amount (%)"
-                type="number"
-                :required="true"
-              />
-            </div>
-          </FormSection>
+          </UCard>
         </div>
 
         <div class="flex flex-col gap-6 lg:col-span-1">
-          <FormSection title="Thumbnail">
-            <FormFileUpload
-              v-model="thumbnailFile"
-              accept="image/png, image/jpeg, image/jpg"
-              description="*.png, *.jpg and *.jpeg"
-            />
-          </FormSection>
+          <UCard>
+            <template #header>
+              <h3 class="text-lg font-semibold leading-6">
+                Thumbnail
+              </h3>
+            </template>
 
-          <FormSection title="Status">
-            <FormSelect
-              v-model="product.status"
-              label="Status"
-              :options="[
-                { label: 'Published', value: 'published' },
-                { label: 'Draft', value: 'draft' },
-              ]"
-            />
-          </FormSection>
-
-          <FormSection title="Product Details">
-            <FormSelect
-              v-model="product.category"
-              label="Categories"
-              :options="[
-                { label: 'Select an option', value: null },
-                { label: 'Electronics', value: 'electronics' },
-                { label: 'Clothing', value: 'clothing' },
-              ]"
-            />
-            <button
-              type="button"
-              class="mt-2 text-sm font-medium text-blue-600 hover:text-blue-500"
-            >
-              + Create New Category
-            </button>
-
-            <div class="mt-4">
-              <FormSelect
-                v-model="product.tags"
-                label="Tags"
-                :options="[{ label: 'Select tags...', value: [] }]"
+            <UFormField label="Product thumbnail" name="thumbnailFile">
+              <FormFileUpload
+                v-model="thumbnailFile"
+                description="*.png, *.jpg, *.jpeg"
+                accept="image/png, image/jpeg, image/jpg"
               />
+            </UFormField>
+          </UCard>
+
+          <UCard>
+            <template #header>
+              <h3 class="text-lg font-semibold leading-6">
+                Status
+              </h3>
+            </template>
+            <UFormField label="Product Status" name="status">
+              <USelect v-model="state.status" :options="statusOptions" />
+            </UFormField>
+          </UCard>
+
+          <UCard>
+            <template #header>
+              <h3 class="text-lg font-semibold leading-6">
+                Product Details
+              </h3>
+            </template>
+            <div class="space-y-4">
+              <UFormField label="Categories" name="category">
+                <USelect v-model="state.category" :options="[{ label: 'Select an option', value: null }, { label: 'Electronics', value: 'electronics' }]" />
+              </UFormField>
+
+              <UButton label="+ Create New Category" variant="link" :padded="false" />
+
+              <UFormField label="Tags" name="tags">
+                <USelectMenu
+                  v-model="state.tags"
+                  multiple
+                  creatable
+                  searchable
+                  placeholder="Select or add tags..."
+                />
+              </UFormField>
             </div>
-          </FormSection>
+          </UCard>
 
-          <FormSection title="Product Template">
-            <FormSelect
-              v-model="product.template"
-              label="Select a product template"
-              :options="[{ label: 'Default template', value: 'default' }]"
-            />
-          </FormSection>
+          <UCard>
+            <template #header>
+              <h3 class="text-lg font-semibold leading-6">
+                Product Template
+              </h3>
+            </template>
+            <UFormField label="Select a product template" name="template">
+              <USelect v-model="state.template" :options="[{ label: 'Default template', value: 'default' }]" />
+            </UFormField>
+          </UCard>
         </div>
 
-        <div class="flex items-center justify-start gap-3 lg:col-span-3">
-          <button
-            type="submit"
-            class="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
-          >
-            Save Changes
-          </button>
-          <button
-            type="button"
-            class="rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100"
-          >
-            Cancel
-          </button>
+        <div class="flex items-center gap-3 lg:col-span-3">
+          <UButton type="submit" label="Save Changes" />
+          <UButton label="Cancel" variant="outline" color="gray" type="button" />
         </div>
-      </form>
+      </UForm>
     </section>
   </div>
 </template>
