@@ -1,3 +1,3 @@
 <template>
-  <h2>Login</h2>
+  <Login />
 </template>
