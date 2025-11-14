@@ -21,9 +21,6 @@ export default defineNuxtConfig({
     redirectOptions: {
       login: '/auth/login',
       callback: '/auth/confirm',
-      include: undefined,
-      exclude: ['/'],
-      saveRedirectToCookie: false,
     },
   },
   eslint: {
