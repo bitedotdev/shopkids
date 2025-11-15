@@ -195,17 +195,6 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
           </UFormField>
         </div>
       </UCard>
-
-      <UCard>
-        <template #header>
-          <h3 class="text-lg font-semibold leading-6">
-            Product Template
-          </h3>
-        </template>
-        <UFormField label="Select a product template" name="template">
-          <USelect v-model="state.template" :options="[{ label: 'Default template', value: 'default' }]" class="w-full" />
-        </UFormField>
-      </UCard>
     </div>
 
     <div class="flex items-center gap-3 lg:col-span-3">
