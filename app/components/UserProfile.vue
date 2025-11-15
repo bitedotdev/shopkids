@@ -1,4 +1,6 @@
 <script setup lang="ts">
+const client = useSupabaseClient()
+
 const items = ref([
   [
     {
@@ -22,9 +24,17 @@ const items = ref([
     {
       label: 'Cerrar sesión',
       icon: 'i-fluent-pane-close-16-filled',
+      async onSelect() {
+        await logout()
+      },
     },
   ],
 ])
+
+async function logout() {
+  await client.auth.signOut()
+  navigateTo('/auth/login')
+}
 </script>
 
 <template>
