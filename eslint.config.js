@@ -6,5 +6,6 @@ export default withNuxt(
   antfu({
     typescript: true,
     formatters: true,
+    ignores: ['./types/database.types.ts'],
   }),
 )
