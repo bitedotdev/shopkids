@@ -7,6 +7,7 @@ export default defineNuxtConfig({
     '@nuxt/ui',
     '@nuxt/fonts',
     '@nuxt/image',
+    '@nuxtjs/sanity',
   ],
   devtools: { enabled: true },
   css: ['./app/assets/css/main.css'],
@@ -20,5 +21,14 @@ export default defineNuxtConfig({
     config: {
       standalone: false,
     },
+  },
+  sanity: {
+    globalHelper: true,
+    projectId: '440lpl2l',
+    dataset: 'production',
+    useCdn: true,
+  },
+  fonts: {
+    provider: 'google',
   },
 })
