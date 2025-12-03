@@ -1,6 +1,4 @@
 <script setup lang="ts">
-const client = useSupabaseClient()
-
 const items = ref([
   [
     {
@@ -32,7 +30,6 @@ const items = ref([
 ])
 
 async function logout() {
-  await client.auth.signOut()
   navigateTo('/auth/login')
 }
 </script>

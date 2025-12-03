@@ -18,7 +18,7 @@ interface Payment {
   amount: number
 }
 
-const data = ref<Payment[]>([{
+const products = ref<Payment[]>([{
   id: '4600',
   date: '2024-03-11T15:30:00',
   status: 'paid',
@@ -258,7 +258,7 @@ const columns: TableColumn<Payment>[] = [{
 const table = useTemplateRef('table')
 
 function randomize() {
-  data.value = [...data.value].sort(() => Math.random() - 0.5)
+  products.value = [...products.value].sort(() => Math.random() - 0.5)
 }
 </script>
 
@@ -301,7 +301,7 @@ function randomize() {
 
     <UTable
       ref="table"
-      :data="data"
+      :data="products"
       :columns="columns"
       sticky
       class="h-96"

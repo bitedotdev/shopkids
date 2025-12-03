@@ -8,10 +8,7 @@ const schema = z.object({
 
 type User = z.output<typeof schema>
 
-const supabase = useSupabaseClient()
-const user = useSupabaseUser()
-
-const toast = useToast()
+// const toast = useToast()
 
 const isLoading = ref(false)
 const sign = ref<'in' | 'up'>('in')
@@ -21,29 +18,17 @@ const state = reactive<Partial<User>>({
   password: undefined,
 })
 
-watchEffect(() => {
-  if (user.value) {
-    return navigateTo('/')
-  }
-})
-
-function displayError(error: { message: string }) {
-  toast.add({
-    title: 'Error',
-    description: error.message,
-    icon: 'i-lucide-alert-circle',
-    color: 'error',
-  })
-}
+// function displayError(error: { message: string }) {
+//   toast.add({
+//     title: 'Error',
+//     description: error.message,
+//     icon: 'i-lucide-alert-circle',
+//     color: 'error',
+//   })
+// }
 
 async function signIn(email: string, password: string) {
-  const { error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  })
-
-  if (error)
-    displayError(error)
+  console.warn('Signing in', email, password)
 }
 
 async function onSubmit(payload: { data: User }) {

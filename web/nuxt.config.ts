@@ -7,7 +7,6 @@ export default defineNuxtConfig({
     '@nuxt/ui',
     '@nuxt/fonts',
     '@nuxt/image',
-    '@nuxtjs/supabase',
   ],
   devtools: { enabled: true },
   css: ['./app/assets/css/main.css'],
@@ -16,13 +15,6 @@ export default defineNuxtConfig({
     plugins: [
       tailwindcss(),
     ],
-  },
-  supabase: {
-    redirectOptions: {
-      login: '/auth/login',
-      callback: '/auth/confirm',
-      exclude: ['/shop(/*)?'],
-    },
   },
   eslint: {
     config: {

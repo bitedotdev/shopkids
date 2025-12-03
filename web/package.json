@@ -1,0 +1,32 @@
+{
+  "name": "e-commerce",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "lint": "eslint .",
+    "fmt": "eslint . --fix",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@nuxt/eslint": "1.10.0",
+    "@nuxt/fonts": "0.12.1",
+    "@nuxt/image": "2.0.0",
+    "@nuxt/ui": "^4.1.0",
+    "@tailwindcss/vite": "^4.1.17",
+    "eslint": "^9.0.0",
+    "nuxt": "^4.2.1",
+    "tailwindcss": "^4.1.17",
+    "vue": "^3.5.22",
+    "vue-router": "^4.6.3"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^6.2.0",
+    "@iconify-json/fluent": "^1.2.34",
+    "@iconify-json/lucide": "^1.2.73",
+    "eslint-plugin-format": "^1.0.2"
+  }
+}

@@ -1,33 +1,20 @@
 {
-  "name": "e-commerce",
+  "name": "shopkids",
   "type": "module",
-  "private": true,
+  "version": "1.0.0",
+  "description": "monorepo for shopkids e-commerce platform",
+  "author": "",
+  "license": "ISC",
+  "keywords": [],
+  "main": "index.js",
   "scripts": {
-    "build": "nuxt build",
-    "dev": "nuxt dev",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
+    "dev-web": "pnpm --filter './web...' dev",
     "lint": "eslint .",
-    "fmt": "eslint . --fix",
-    "postinstall": "nuxt prepare"
-  },
-  "dependencies": {
-    "@nuxt/eslint": "1.10.0",
-    "@nuxt/fonts": "0.12.1",
-    "@nuxt/image": "2.0.0",
-    "@nuxt/ui": "^4.1.0",
-    "@nuxtjs/supabase": "^2.0.1",
-    "@tailwindcss/vite": "^4.1.17",
-    "eslint": "^9.0.0",
-    "nuxt": "^4.2.1",
-    "tailwindcss": "^4.1.17",
-    "vue": "^3.5.22",
-    "vue-router": "^4.6.3"
+    "clean": "rimraf node_modules apps/*/node_modules"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^6.2.0",
-    "@iconify-json/fluent": "^1.2.34",
-    "@iconify-json/lucide": "^1.2.73",
-    "eslint-plugin-format": "^1.0.2"
+    "@antfu/eslint-config": "^4.11.0",
+    "eslint": "^9.23.0",
+    "eslint-plugin-format": "^1.0.1"
   }
 }
