@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { FormError, FormSubmitEvent } from '#ui/types'
+import type { FormSubmitEvent } from '#ui/types'
 import { z } from 'zod'
 
 const schema = z.object({
