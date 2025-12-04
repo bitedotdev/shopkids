@@ -7,6 +7,6 @@
       </figcaption>
     </figure>
 
-    <UserProfile />
+    <AdminUserProfile />
   </nav>
 </template>
