@@ -5,6 +5,8 @@ useHead({
 
 const { products, status, clearFilters } = useCatalog()
 
+const items = ref(['Backlog', 'Todo', 'In Progress', 'Done'])
+const value = ref('Backlog')
 const isMobileFiltersOpen = ref(false)
 </script>
 
@@ -111,5 +113,7 @@ const isMobileFiltersOpen = ref(false)
         </div>
       </div>
     </UContainer>
+
+    <USelect v-model="value" :items="items" />
   </NuxtLayout>
 </template>

@@ -1,10 +1,8 @@
-// @ts-check
 import antfu from '@antfu/eslint-config'
-import withNuxt from './.nuxt/eslint.config.mjs'
+import nuxt from './packages/web/.nuxt/eslint.config.mjs'
 
-export default withNuxt(
-  antfu({
-    typescript: true,
-    formatters: true,
-  }),
-)
+export default antfu({
+  formatters: true,
+  pnpm: false,
+})
+  .append(nuxt())
