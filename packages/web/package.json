@@ -13,7 +13,7 @@
     "@nuxt/fonts": "0.12.1",
     "@nuxt/image": "2.0.0",
     "@nuxt/ui": "^4.1.0",
-    "@nuxtjs/sanity": "^1.13.3",
+    "@nuxtjs/sanity": "1.14.1",
     "@tailwindcss/vite": "^4.1.17",
     "nuxt": "^4.2.1",
     "tailwindcss": "^4.1.17",

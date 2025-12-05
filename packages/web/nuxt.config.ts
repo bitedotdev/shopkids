@@ -17,6 +17,12 @@ export default defineNuxtConfig({
     plugins: [
       tailwindcss(),
     ],
+    resolve: {
+      alias: {
+        'react-compiler-runtime': 'react-compiler-runtime',
+        'react': 'react',
+      },
+    },
   },
   eslint: {
     config: {
