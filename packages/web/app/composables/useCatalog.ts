@@ -47,6 +47,7 @@ export const GENDER_OPTIONS = [
   { label: 'Unisex (Ambos géneros)', value: 'unisex' },
   { label: 'No aplica', value: 'none' },
 ]
+
 export function useCatalog() {
   const sanity = useSanity()
 

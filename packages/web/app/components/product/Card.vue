@@ -1,11 +1,23 @@
 <script setup lang="ts">
+import { useCart } from '~/store/cart'
+
 defineProps<{ product: any }>()
 
+const cart = useCart()
+
 const currency = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' })
+
+onMounted(() => {
+  cart.loadFromStorage()
+})
+
+function isInCart(id: string) {
+  return cart.storage.some(item => item._id === id)
+}
 </script>
 
 <template>
-  <UCard class="group h-full flex flex-col overflow-hidden transition-all hover:shadow-lg hover:ring-2 hover:ring-primary-500/20">
+  <UCard class="group h-full flex flex-col overflow-hidden transition-all hover:shadow-lg hover:ring-2 hover:ring-primary-500/20" :class="{ 'ring-2 ring-primary-500/20': isInCart(product._id) }">
     <div class="relative overflow-hidden aspect-3/4 bg-gray-100 dark:bg-gray-800">
       <SanityImage
         v-if="product.imageAssetId"
@@ -21,6 +33,7 @@ const currency = new Intl.NumberFormat('es-CO', { style: 'currency', currency: '
             :alt="product.name"
             loading="lazy"
             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            :class="{ 'scale-110': isInCart(product._id) }"
           >
         </template>
       </SanityImage>
@@ -32,9 +45,12 @@ const currency = new Intl.NumberFormat('es-CO', { style: 'currency', currency: '
         {{ product.badge }}
       </UBadge>
 
-      <div class="absolute bottom-4 left-0 right-0 px-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-        <UButton block variant="solid" icon="i-lucide-shopping-cart" class="shadow-md text-gray-900">
-          Añadir
+      <div class="absolute bottom-4 left-0 right-0 px-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300" :class="{ '!translate-y-0': isInCart(product._id) }">
+        <UButton v-if="isInCart(product._id)" block variant="solid" icon="i-lucide-shopping-cart" class="shadow-md text-gray-900" @click="cart.remove(product._id)">
+          Eliminar del carrito
+        </UButton>
+        <UButton v-else block variant="solid" icon="i-lucide-shopping-cart" class="shadow-md text-gray-900" @click="cart.add(product)">
+          Agregar al carrito
         </UButton>
       </div>
 
