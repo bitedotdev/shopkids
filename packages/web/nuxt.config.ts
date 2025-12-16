@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     '@nuxt/eslint',
     '@nuxt/fonts',
     '@nuxt/image',
+    '@pinia/nuxt',
     '@nuxtjs/sanity',
   ],
   devtools: { enabled: true },
