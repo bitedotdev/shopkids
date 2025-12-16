@@ -5,31 +5,25 @@ useHead({
 
 const { products, status, clearFilters } = useCatalog()
 
-const items = ref(['Backlog', 'Todo', 'In Progress', 'Done'])
-const value = ref('Backlog')
 const isMobileFiltersOpen = ref(false)
 </script>
 
 <template>
   <NuxtLayout>
-    <div class="min-h-screen bg-white dark:bg-gray-950 font-sans">
-      <Hero
-        title="Redefine tu Estilo Diario"
-        subtitle="Lanzamiento Invierno 2024"
-        description="Encuentra el equilibrio perfecto entre comodidad y elegancia con nuestra nueva colección de ropa urbana sostenible."
-        image-src="https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=2070&auto=format&fit=crop"
-        cta-text="Ver Catálogo"
-      />
-    </div>
+    <Hero
+      title="Pequeños Exploradores, Grandes Aventuras"
+      subtitle="Colección Kids Invierno 2025"
+      description="Prendas diseñadas para jugar, saltar y descubrir el mundo. Comodidad total y tejidos resistentes para su día a día."
+    />
 
     <UContainer id="shop-section" class="py-12">
       <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4 border-b border-gray-100 dark:border-gray-800 pb-6">
         <div>
           <h2 class="text-3xl font-bold text-gray-900 dark:text-white">
-            Últimos Lanzamientos
+            Catálogo
           </h2>
           <p class="text-gray-500 mt-1">
-            {{ products.length }}
+            Cantidad disponible: {{ products.length }}
           </p>
         </div>
 
@@ -61,7 +55,6 @@ const isMobileFiltersOpen = ref(false)
                   <div class="flex gap-4">
                     <UButton block variant="outline" class="flex-1" @click="clearFilters">
                       Limpiar
-                      Limpiar
                     </UButton>
                     <UButton block class="flex-1" @click="isMobileFiltersOpen = false">
                       Ver Resultados
@@ -71,12 +64,6 @@ const isMobileFiltersOpen = ref(false)
               </UCard>
             </template>
           </USlideover>
-
-          <USelectMenu
-            class="w-48"
-            placeholder="Ordenar por"
-            :options="['Más relevantes', 'Menor precio', 'Mayor precio', 'Más recientes']"
-          />
         </div>
       </div>
 
@@ -113,7 +100,5 @@ const isMobileFiltersOpen = ref(false)
         </div>
       </div>
     </UContainer>
-
-    <USelect v-model="value" :items="items" />
   </NuxtLayout>
 </template>

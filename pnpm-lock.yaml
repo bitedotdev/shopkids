@@ -78,6 +78,9 @@ importers:
       pinia:
         specifier: ^3.0.4
         version: 3.0.4(typescript@5.9.3)(vue@3.5.25(typescript@5.9.3))
+      pinia-plugin-persistedstate:
+        specifier: ^4.7.1
+        version: 4.7.1(@nuxt/kit@4.2.1(magicast@0.5.1))(@pinia/nuxt@0.5.4(magicast@0.5.1)(typescript@5.9.3)(vue@3.5.25(typescript@5.9.3)))(pinia@3.0.4(typescript@5.9.3)(vue@3.5.25(typescript@5.9.3)))
       tailwindcss:
         specifier: ^4.1.17
         version: 4.1.17
@@ -7231,6 +7234,20 @@ packages:
     resolution: {integrity: sha512-uB80kBFb/tfd68bVleG9T5GGsGPjJrLAUpR5PZIrhBnIaRTQRjqdJSsIKkOP6OAIFbj7GOrcudc5pNjZ+geV2g==}
     engines: {node: '>=6'}
 
+  pinia-plugin-persistedstate@4.7.1:
+    resolution: {integrity: sha512-WHOqh2esDlR3eAaknPbqXrkkj0D24h8shrDPqysgCFR6ghqP/fpFfJmMPJp0gETHsvrh9YNNg6dQfo2OEtDnIQ==}
+    peerDependencies:
+      '@nuxt/kit': '>=3.0.0'
+      '@pinia/nuxt': '>=0.10.0'
+      pinia: '>=3.0.0'
+    peerDependenciesMeta:
+      '@nuxt/kit':
+        optional: true
+      '@pinia/nuxt':
+        optional: true
+      pinia:
+        optional: true
+
   pinia@2.3.1:
     resolution: {integrity: sha512-khUlZSwt9xXCaTbbxFYBKDc/bWAGWJjOgvxETwkTN7KRm66EeT1ZdZj6i2ceh9sP2Pzqsbc704r2yngBrxBVug==}
     peerDependencies:
@@ -12703,7 +12720,7 @@ snapshots:
       - '@emotion/is-prop-valid'
       - styled-components
 
-  '@sanity/insert-menu@2.1.0(@emotion/is-prop-valid@1.2.2)(@sanity/types@4.21.1(@types/react@19.2.7))(react-dom@19.2.1(react@19.2.1))(react-is@19.2.3)(react@19.2.1)(styled-components@6.1.19(react-dom@19.2.1(react@19.2.1))(react@19.2.1))':
+  '@sanity/insert-menu@2.1.0(@emotion/is-prop-valid@1.2.2)(@sanity/types@4.21.1(@types/react@19.2.7)(debug@4.4.3))(react-dom@19.2.1(react@19.2.1))(react-is@19.2.3)(react@19.2.1)(styled-components@6.1.19(react-dom@19.2.1(react@19.2.1))(react@19.2.1))':
     dependencies:
       '@sanity/icons': 3.7.4(react@19.2.1)
       '@sanity/types': 4.21.1(@types/react@19.2.7)(debug@4.4.3)
@@ -12819,7 +12836,7 @@ snapshots:
       - '@sanity/client'
       - '@sanity/types'
 
-  '@sanity/presentation-comlink@2.0.1(@sanity/client@7.13.2(debug@4.4.3))(@sanity/types@4.21.1(@types/react@19.2.7))':
+  '@sanity/presentation-comlink@2.0.1(@sanity/client@7.13.2(debug@4.4.3))(@sanity/types@4.21.1(@types/react@19.2.7)(debug@4.4.3))':
     dependencies:
       '@sanity/comlink': 4.0.1
       '@sanity/visual-editing-types': 1.1.8(@sanity/client@7.13.2(debug@4.4.3))(@sanity/types@4.21.1(@types/react@19.2.7)(debug@4.4.3))
@@ -18156,6 +18173,14 @@ snapshots:
 
   pify@4.0.1: {}
 
+  pinia-plugin-persistedstate@4.7.1(@nuxt/kit@4.2.1(magicast@0.5.1))(@pinia/nuxt@0.5.4(magicast@0.5.1)(typescript@5.9.3)(vue@3.5.25(typescript@5.9.3)))(pinia@3.0.4(typescript@5.9.3)(vue@3.5.25(typescript@5.9.3))):
+    dependencies:
+      defu: 6.1.4
+    optionalDependencies:
+      '@nuxt/kit': 4.2.1(magicast@0.5.1)
+      '@pinia/nuxt': 0.5.4(magicast@0.5.1)(typescript@5.9.3)(vue@3.5.25(typescript@5.9.3))
+      pinia: 3.0.4(typescript@5.9.3)(vue@3.5.25(typescript@5.9.3))
+
   pinia@2.3.1(typescript@5.9.3)(vue@3.5.25(typescript@5.9.3)):
     dependencies:
       '@vue/devtools-api': 6.6.4
@@ -18900,13 +18925,13 @@ snapshots:
       '@sanity/id-utils': 1.0.0
       '@sanity/image-url': 2.0.2
       '@sanity/import': 3.38.3(@types/react@19.2.7)
-      '@sanity/insert-menu': 2.1.0(@emotion/is-prop-valid@1.2.2)(@sanity/types@4.21.1(@types/react@19.2.7))(react-dom@19.2.1(react@19.2.1))(react-is@19.2.3)(react@19.2.1)(styled-components@6.1.19(react-dom@19.2.1(react@19.2.1))(react@19.2.1))
+      '@sanity/insert-menu': 2.1.0(@emotion/is-prop-valid@1.2.2)(@sanity/types@4.21.1(@types/react@19.2.7)(debug@4.4.3))(react-dom@19.2.1(react@19.2.1))(react-is@19.2.3)(react@19.2.1)(styled-components@6.1.19(react-dom@19.2.1(react@19.2.1))(react@19.2.1))
       '@sanity/logos': 2.2.2(react@19.2.1)
       '@sanity/media-library-types': 1.0.1
       '@sanity/message-protocol': 0.17.8
       '@sanity/migrate': 4.21.1(@types/react@19.2.7)
       '@sanity/mutator': 4.21.1(@types/react@19.2.7)
-      '@sanity/presentation-comlink': 2.0.1(@sanity/client@7.13.2(debug@4.4.3))(@sanity/types@4.21.1(@types/react@19.2.7))
+      '@sanity/presentation-comlink': 2.0.1(@sanity/client@7.13.2(debug@4.4.3))(@sanity/types@4.21.1(@types/react@19.2.7)(debug@4.4.3))
       '@sanity/preview-url-secret': 3.0.0(@sanity/client@7.13.2(debug@4.4.3))(@sanity/icons@3.7.4(react@19.2.1))(sanity@4.21.1(@emotion/is-prop-valid@1.2.2)(@portabletext/sanity-bridge@1.2.14(@types/react@19.2.7))(@types/node@25.0.1)(@types/react@19.2.7)(immer@11.0.1)(jiti@2.6.1)(lightningcss@1.30.2)(postcss@8.5.6)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(styled-components@6.1.19(react-dom@19.2.1(react@19.2.1))(react@19.2.1))(terser@5.44.1)(typescript@5.9.3)(yaml@2.8.2))
       '@sanity/schema': 4.21.1(@types/react@19.2.7)(debug@4.4.3)
       '@sanity/sdk': 2.1.2(@types/react@19.2.7)(debug@4.4.3)(immer@11.0.1)(react@19.2.1)(use-sync-external-store@1.6.0(react@19.2.1))

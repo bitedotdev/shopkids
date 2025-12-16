@@ -33,16 +33,16 @@ const count = ref<number>(1)
         </p>
       </div>
       <div class="flex items-center gap-4">
-        <UButton :disabled="count <= 1" size="sm" variant="outline" color="neutral" icon="lucide:minus" @click="count--" />
+        <UButton :disabled="count <= 1" size="sm" variant="outline" color="neutral" icon="i-fluent-minimize-24-filled" @click="count--" />
         <span>{{ count }}</span>
-        <UButton size="sm" variant="outline" color="neutral" icon="lucide:plus" @click="count++" />
+        <UButton size="sm" variant="outline" color="neutral" icon="i-fluent-add-24-filled" @click="count++" />
       </div>
       <p class="font-bold text-lg">
         $ {{ product.price * count }}
       </p>
     </div>
     <div class="pr-4">
-      <UButton variant="outline" color="error" icon="lucide:trash" @click="cart.remove(product._id)" />
+      <UButton variant="outline" color="error" icon="i-fluent-delete-24-filled" @click="cart.remove(product._id)" />
     </div>
   </article>
 </template>

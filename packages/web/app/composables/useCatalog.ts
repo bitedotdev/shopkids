@@ -27,7 +27,7 @@ export interface Product {
   tags?: string[]
   image: SanityImage
   images?: SanityImage[]
-
+  imageAssetId?: string
   uiPrice?: string
   badge?: string
 }
@@ -81,7 +81,7 @@ export function useCatalog() {
     return query
   })
 
-  const { data: rawProducts, status } = useAsyncData<any[]>(
+  const { data: rawProducts, status } = useAsyncData<Product[]>(
     'catalog-products',
     () => sanity.fetch(productsQuery.value, { categoryIds: filters.value.categories }),
     { watch: [productsQuery] },

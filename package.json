@@ -11,6 +11,7 @@
     "dev": "pnpm --recursive --parallel --stream dev",
     "build": "pnpm --recursive build",
     "dev-web": "pnpm --filter @shopkids/web dev",
+    "build-web": "pnpm --filter @shopkids/web build",
     "dev-studio": "pnpm --filter @shopkids/node dev",
     "lint": "eslint .",
     "fmt": "eslint . --fix"

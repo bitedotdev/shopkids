@@ -10,6 +10,7 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@pinia/nuxt',
     '@nuxtjs/sanity',
+    'pinia-plugin-persistedstate/nuxt',
   ],
   devtools: { enabled: true },
   css: ['./app/assets/css/main.css'],

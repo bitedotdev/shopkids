@@ -1,74 +1,96 @@
 <script setup lang="ts">
 import { useCart } from '~/store/cart'
 
-defineProps<{ product: any }>()
+const props = defineProps<{ product: any }>()
 
 const cart = useCart()
 
-const currency = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' })
-
-onMounted(() => {
-  cart.loadFromStorage()
+const currency = new Intl.NumberFormat('es-CO', { 
+  style: 'currency', 
+  currency: 'COP', 
+  maximumFractionDigits: 0 
 })
 
-function isInCart(id: string) {
-  return cart.storage.some(item => item._id === id)
-}
+const isInCart = computed(() => {
+  return cart.storage.some(item => item._id === props.product._id)
+})
+
+const cardState = computed(() => ({
+  ringColor: isInCart.value ? 'ring-primary-500' : 'ring-transparent',
+  imageOpacity: isInCart.value ? 'opacity-90' : 'opacity-100',
+  buttonIcon: isInCart.value ? 'i-lucide-check' : 'i-lucide-plus',
+  buttonVariant: isInCart.value ? 'solid' : 'solid',
+  buttonColor: isInCart.value ? 'primary' : 'white'
+}))
 </script>
 
 <template>
-  <UCard class="group h-full flex flex-col overflow-hidden transition-all hover:shadow-lg hover:ring-2 hover:ring-primary-500/20" :class="{ 'ring-2 ring-primary-500/20': isInCart(product._id) }">
-    <div class="relative overflow-hidden aspect-3/4 bg-gray-100 dark:bg-gray-800">
+  <div class="group relative flex flex-col gap-3">
+    
+    <div 
+      class="relative aspect-square overflow-hidden rounded-2xl bg-gray-100 dark:bg-gray-800 transition-all duration-300 ring-2 ring-offset-2 dark:ring-offset-gray-900"
+      :class="[cardState.ringColor]"
+    >
+<NuxtLink :to="`/p/${product.slug}`" class="block w-full h-full cursor-pointer">
       <SanityImage
         v-if="product.imageAssetId"
         :asset-id="product.imageAssetId"
         auto="format"
-        :w="400"
-        :h="533"
+        :w="500"
+        :h="667"
         fit="crop"
-      >
-        <template #default="{ src }">
-          <img
-            :src="src"
-            :alt="product.name"
-            loading="lazy"
-            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-            :class="{ 'scale-110': isInCart(product._id) }"
-          >
-        </template>
-      </SanityImage>
-      <UBadge
-        v-if="product.badge"
-        class="absolute top-2 left-2 z-10"
-        variant="solid"
+        class="h-full w-full object-cover transition-transform duration-700 ease-out will-change-transform group-hover:scale-105"
+        :class="cardState.imageOpacity"
+      />
+</NuxtLink>
+
+      <span 
+        v-if="product.badge" 
+        class="absolute top-3 left-3 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider bg-white/90 dark:bg-black/80 backdrop-blur-sm rounded-md shadow-sm"
       >
         {{ product.badge }}
-      </UBadge>
+      </span>
 
-      <div class="absolute bottom-4 left-0 right-0 px-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300" :class="{ '!translate-y-0': isInCart(product._id) }">
-        <UButton v-if="isInCart(product._id)" block variant="solid" icon="i-lucide-shopping-cart" class="shadow-md text-gray-900" @click="cart.remove(product._id)">
-          Eliminar del carrito
-        </UButton>
-        <UButton v-else block variant="solid" icon="i-lucide-shopping-cart" class="shadow-md text-gray-900" @click="cart.add(product)">
-          Agregar al carrito
-        </UButton>
-      </div>
-
-      <UButton
-        icon="i-lucide-heart"
-        variant="ghost"
-        class="absolute top-2 right-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+      <UButton 
+        icon="i-fluent-heart-24-filled"
+        variant="outline"
+        color="neutral"
+        class="absolute top-5 right-3 p-2 transform -translate-y-2.5 transition-all rounded-full"
+        aria-label="Agregar a favoritos"
       />
-    </div>
+        
+      <div class="absolute bottom-3 right-3 z-10">
+        <UTooltip :text="isInCart ? 'Eliminar' : 'Agregar'" :popper="{ placement: 'left' }">
+           <UButton
+            :icon="isInCart ? 'i-fluent-delete-24-filled' : 'i-fluent-add-24-filled'"
+            :color="isInCart ? 'error' : 'primary'"
+            :variant="isInCart ? 'solid' : 'solid'"
+            size="lg"            
+            class="shadow-lg transition-all duration-300 transform active:scale-90 hover:scale-110"
+            @click="isInCart ? cart.remove(product._id) : cart.add(product)"
+          />
+        </UTooltip>
+      </div>
 
-    <div class="p-4 flex flex-col gap-1">
-      <span class="text-xs text-gray-500 uppercase tracking-wider">{{ product.category }}</span>
-      <h3 class="font-medium text-gray-900 dark:text-white truncate">
-        {{ product.name }}
-      </h3>
-      <div class="flex items-center justify-between mt-2">
-        <span class="font-bold text-lg">{{ currency.format(product.price) }}</span>
+      </div>
+
+    <div class="flex flex-col px-1">
+      <div class="flex justify-between items-start gap-4">
+        <div class="space-y-1">
+          <h3 class="font-medium text-gray-900 dark:text-white leading-tight group-hover:text-primary-500 transition-colors cursor-pointer">
+            {{ product.name }}
+          </h3>
+          <p class="text-xs text-gray-500 dark:text-gray-400 font-medium">
+            {{ product.category }}
+          </p>
+        </div>
+        
+        <div class="flex flex-col items-end">
+           <span class="font-bold text-gray-900 dark:text-white whitespace-nowrap">
+            {{ currency.format(product.price) }}
+          </span>
+          </div>
       </div>
     </div>
-  </UCard>
+  </div>
 </template>
