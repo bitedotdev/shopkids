@@ -37,9 +37,6 @@ export default defineNuxtConfig({
     dataset: 'production',
     useCdn: true,
   },
-  nitro: {
-    preset: 'deno-deploy',
-  },
   fonts: {
     provider: 'google',
   },
