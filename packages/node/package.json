@@ -1,6 +1,6 @@
 {
   "name": "@shopkids/node",
-  "version": "1.0.0",
+  "version": "1.0.0",    
   "private": true,
   "license": "MIt",
   "keywords": [
@@ -15,10 +15,10 @@
     "deploy-graphql": "sanity graphql deploy"
   },
   "dependencies": {
-    "@sanity/vision": "^4.21.1",
+    "@sanity/vision": "^4.22.0",
     "react": "^19.1",
     "react-dom": "^19.1",
-    "sanity": "^4.21.1",
+    "sanity": "^4.22.0",
     "styled-components": "^6.1.18"
   },
   "devDependencies": {
