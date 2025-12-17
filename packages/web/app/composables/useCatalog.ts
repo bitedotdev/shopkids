@@ -32,7 +32,7 @@ export interface Product {
   badge?: string
 }
 
-export type ProductCart = Pick<Product, '_id' | 'name' | 'price' | 'gender'> & {
+export type ProductCart = Pick<Product, '_id' | 'name' | 'price' | 'gender' | 'offer'> & {
   rawPrice: number
   category: string | any
   imageAssetId: string | null
