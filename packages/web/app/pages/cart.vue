@@ -28,8 +28,7 @@ const subtotal = computed(() => {
   }, 0)
 })
 
-const shippingCost = computed(() => subtotal.value > 200000 ? 0 : 15000)
-const total = computed(() => subtotal.value + shippingCost.value)
+const total = computed(() => subtotal.value)
 </script>
 
 <template>
@@ -69,15 +68,6 @@ const total = computed(() => subtotal.value + shippingCost.value)
                   </dt>
                   <dd class="text-sm font-medium text-gray-900 dark:text-white">
                     {{ currency.format(subtotal) }}
-                  </dd>
-                </div>
-
-                <div class="flex items-center justify-between border-t border-gray-200 dark:border-gray-800 pt-4">
-                  <dt class="text-sm text-gray-600 dark:text-gray-400">
-                    Estimado de envío
-                  </dt>
-                  <dd class="text-sm font-medium text-gray-900 dark:text-white">
-                    {{ shippingCost === 0 ? 'Gratis' : currency.format(shippingCost) }}
                   </dd>
                 </div>
 

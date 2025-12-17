@@ -2,6 +2,7 @@
 import * as z from 'zod'
 import type { FormSubmitEvent } from '#ui/types'
 import { useCart } from '~/store/cart'
+import type { RadioGroupItem } from '@nuxt/ui'
 
 const cart = useCart()
 const router = useRouter()
@@ -12,6 +13,12 @@ if (cart.storage.length === 0) {
 }
 
 const formRef = ref()
+
+const deliveryOptions = ref<RadioGroupItem[]>([
+  { value: 'delivery', label: 'Enviar a domicilio' },
+  { value: 'pickup', label: 'Recoger en sitio' }
+])
+
 const currency = new Intl.NumberFormat('es-CO', { 
   style: 'currency', 
   currency: 'COP', 
@@ -22,7 +29,7 @@ const breadcrumbItems = [
   {
     label: 'Inicio',    
     to: '/'
-  },
+  },  
   {
     label: 'Carrito',    
     to: '/cart'
@@ -33,7 +40,8 @@ const breadcrumbItems = [
   }
 ]
 
-const schema = z.object({
+const baseSchema = z.object({
+  deliveryMethod: z.enum(['delivery', 'pickup']),
   firstName: z.string().min(2, 'Ingresa tu nombre (mínimo 2 letras)'),
   lastName: z.string().min(2, 'Ingresa tu apellido'),
   phone: z.string()
@@ -45,9 +53,29 @@ const schema = z.object({
   notes: z.string().optional()
 })
 
+const schema = baseSchema.superRefine((data: any, ctx: any) => {
+  if (data.deliveryMethod === 'delivery') {
+    if (!data.city || data.city.length < 3) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'La ciudad es requerida para envíos',
+        path: ['city']
+      })
+    }
+    if (!data.address || data.address.length < 5) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'La dirección es requerida para envíos',
+        path: ['address']
+      })
+    }
+  }
+})
+
 type Schema = z.output<typeof schema>
 
 const state = reactive<Schema>({
+deliveryMethod: 'delivery',
   firstName: '',
   lastName: '',
   phone: '',
@@ -60,8 +88,7 @@ const state = reactive<Schema>({
 const loading = ref(false)
 
 const subtotal = computed(() => cart.storage.reduce((acc, item) => acc + (item.offer || item.price || 0), 0))
-const shippingCost = computed(() => subtotal.value > 200000 ? 0 : 15000)
-const total = computed(() => subtotal.value + shippingCost.value)
+const total = computed(() => subtotal.value)
 
 const onSubmit = async (event: FormSubmitEvent<Schema>) => {
   loading.value = true
@@ -70,10 +97,11 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
 
   const PHONE_NUMBER = '573044176141'
 
-  let message = `*¡Hola! Quiero realizar un nuevo pedido web.*\n\n`
+  let message = `*¡Hola Shopkids! Quiero realizar un nuevo pedido.*\n\n`
   message += `🎉 *Cliente:* ${data.firstName} ${data.lastName}\n`
-  message += `📱 *Tel:* ${data.phone}\n`
+  message += `📱 *Telefono:* ${data.phone}\n`
   message += `📍 *Dirección:* ${data.address}, ${data.city}\n`
+
   if(data.email) message += `📧 *Email:* ${data.email}\n`
   if(data.notes) message += `📝 *Notas:* ${data.notes}\n`
   
@@ -83,8 +111,16 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
     message += `- ${item.name} | ${currency.format(item.offer || item.price)}\n`
   })
 
-  message += `\n🚚 *Envío:* ${shippingCost.value === 0 ? 'Gratis' : currency.format(shippingCost.value)}\n`
-  message += `💰 *TOTAL A PAGAR: ${currency.format(total.value)}*`
+  const shippingText = data.deliveryMethod === 'pickup' 
+      ? 'Recoge en tienda (Gratis)' 
+      : 'A coordinar con el vendedor 🚚'
+
+  message += `\n🚚 *Envío:* ${shippingText}\n`
+  message += `💰 *TOTAL PRODUCTOS: ${currency.format(total.value)}*\n\n`
+
+if (data.deliveryMethod === 'delivery') {
+    message += `_(El valor del envío se acordará en este chat)_`
+  }
 
   const url = `https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(message)}`
     
@@ -119,6 +155,10 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
               
               <UForm ref="formRef" :schema="schema" :state="state" class="space-y-5" @submit="onSubmit">
                 
+<UFormField label="¿Cómo deseas recibir tu pedido?" name="deliveryMethod">
+  <URadioGroup v-model="state.deliveryMethod" orientation="horizontal" variant="list" :items="deliveryOptions" />
+</UFormField>
+
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <UFormField label="Nombre" name="firstName">
                     <UInput v-model="state.firstName" placeholder="Juan" class="w-full" />
@@ -182,12 +222,19 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                   <span>Subtotal</span>
                   <span>{{ currency.format(subtotal) }}</span>
                 </div>
-                <div class="flex justify-between text-gray-600 dark:text-gray-400">
+          <div class="flex justify-between items-center text-gray-600 dark:text-gray-400">
                   <span>Envío</span>
-                  <span :class="{'text-green-600 font-medium': shippingCost === 0}">
-                    {{ shippingCost === 0 ? 'Gratis' : currency.format(shippingCost) }}
-                  </span>
+                  <UBadge 
+                    v-if="state.deliveryMethod === 'delivery'" 
+                    color="neutral" 
+                    variant="soft" 
+                    size="xs"
+                  >
+                    A coordinar
+                  </UBadge>
+                  <span v-else class="text-green-600 font-medium">Gratis</span>
                 </div>
+
                 <div class="flex justify-between text-lg font-bold pt-4 border-t border-gray-200 dark:border-gray-800 text-gray-900 dark:text-white">
                   <span>Total</span>
                   <span>{{ currency.format(total) }}</span>

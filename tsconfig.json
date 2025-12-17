@@ -1,0 +1,8 @@
+{
+  "extends": "./packages/web/.nuxt/tsconfig.json",
+  "compilerOptions": {
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
+    "noEmit": true
+  }
+}
