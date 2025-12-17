@@ -1,7 +1,9 @@
 <script lang="ts" setup>
 import { useCart } from '~/store/cart'
+import { useFavorite } from '~/store/favorite'
 
 const cart = useCart()
+const favorite = useFavorite()
 </script>
 
 <template>
@@ -23,13 +25,12 @@ const cart = useCart()
       </div>
 
       <div class="flex items-center gap-3">
-        <UButton
-          icon="i-fluent-heart-24-filled"
-          variant="outline"
-          color="neutral"
-          size="lg"
-        />
-
+        <div class="w-fit h-fit relative">
+          <UBadge v-if="favorite.storage.length >= 1" size="sm" class="absolute -top-1.5 -right-1.5 rounded-full size-4">
+            {{ favorite.storage.length }}
+          </UBadge>
+          <UButton icon="i-fluent-heart-24-filled" variant="outline" color="neutral" size="lg" to="/favorite" />
+        </div>
         <div class="w-fit h-fit relative">
           <UBadge v-if="cart.storage.length >= 1" size="sm" class="absolute -top-1.5 -right-1.5 rounded-full size-4">
             {{ cart.storage.length }}
