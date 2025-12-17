@@ -1,3 +1,4 @@
+import process from 'node:process'
 import tailwindcss from '@tailwindcss/vite'
 import { defineNuxtConfig } from 'nuxt/config'
 
@@ -33,8 +34,8 @@ export default defineNuxtConfig({
   },
   sanity: {
     globalHelper: true,
-    projectId: '440lpl2l',
-    dataset: 'production',
+    projectId: process.env.NUXT_SANITY_STUDIO_PROJECT_ID ?? '',
+    dataset: process.env.NUXT_SANITY_STUDIO_DATASET ?? '',
     useCdn: true,
   },
   fonts: {
