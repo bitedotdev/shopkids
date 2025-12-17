@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { useCart } from '~/store/cart'
+import { useFavorite } from '~/store/favorite'
 
 const props = defineProps<{ product: ProductCart }>()
 
 const cart = useCart()
+const favorite = useFavorite()
 
 const currency = new Intl.NumberFormat('es-CO', {
   style: 'currency',
@@ -13,6 +15,9 @@ const currency = new Intl.NumberFormat('es-CO', {
 
 const isInCart = computed(() => {
   return cart.storage.some(item => item._id === props.product._id)
+})
+const isInFavorite = computed(() => {
+  return favorite.storage.some(item => item._id === props.product._id)
 })
 
 const cardState = computed(() => ({
@@ -51,11 +56,12 @@ const cardState = computed(() => ({
       </span>
 
       <UButton
-        icon="i-fluent-heart-24-filled"
+        :icon="isInFavorite ? 'i-fluent:heart-off-16-filled' : 'i-fluent-heart-24-filled'"
         variant="outline"
         color="neutral"
         class="absolute top-5 right-3 p-2 transform -translate-y-2.5 transition-all rounded-full"
         aria-label="Agregar a favoritos"
+        @click="isInFavorite ? favorite.remove(product._id) : favorite.add(product)"
       />
 
       <div class="absolute bottom-3 right-3 z-10">
@@ -75,7 +81,7 @@ const cardState = computed(() => ({
     <div class="flex flex-col px-1">
       <div class="flex justify-between items-start gap-4">
         <div class="space-y-1">
-          <h3 class="font-medium text-gray-900 dark:text-white leading-tight group-hover:text-primary-500 transition-colors cursor-pointer">
+          <h3 class="font-medium text-gray-900 dark:text-white leading-tight group-hover:text-primary transition-colors cursor-pointer">
             {{ product.name }}
           </h3>
           <p class="text-xs text-gray-500 dark:text-gray-400 font-medium">
