@@ -32,6 +32,14 @@ export interface Product {
   badge?: string
 }
 
+export type ProductCart = Pick<Product, '_id' | 'name' | 'price' | 'gender'> & {
+  rawPrice: number
+  category: string | any
+  imageAssetId: string | null
+  badge: string | null
+  slug: string | null
+}
+
 export interface FilterState {
   categories: string[]
   genders: string[]
@@ -113,7 +121,7 @@ export function useCatalog() {
       }
 
       return {
-        id: p._id,
+        _id: p._id,
         name: p.name,
         price: p.offer || p.price,
         rawPrice: p.offer || p.price,

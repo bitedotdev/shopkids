@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia'
 
 export const useCart = defineStore('cart', () => {
-  const storage = ref<Product[]>([])
-  
-  function add(product: Product) {    
+  const storage = ref<ProductCart[]>([])
+
+  function add(product: ProductCart) {
     if (storage.value.some(item => item._id === product._id))
       return
-    
+
     storage.value.push(product)
   }
 
@@ -24,7 +24,6 @@ export const useCart = defineStore('cart', () => {
     remove,
     clearStorage,
   }
-}, 
-{
-  persist: true,   
+}, {
+  persist: true,
 })
