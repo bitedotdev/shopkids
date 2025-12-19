@@ -26,6 +26,7 @@
   "devDependencies": {
     "@iconify-json/fluent": "^1.2.34",
     "@iconify-json/lucide": "^1.2.73",
+    "@iconify-json/ph": "^1.2.2",
     "@nuxt/eslint": "1.10.0"
   }
 }

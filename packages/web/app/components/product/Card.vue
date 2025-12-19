@@ -19,82 +19,74 @@ const isInCart = computed(() => {
 const isInFavorite = computed(() => {
   return favorite.storage.some(item => item._id === props.product._id)
 })
-
-const cardState = computed(() => ({
-  ringColor: isInCart.value ? 'ring-primary-500' : 'ring-transparent',
-  imageOpacity: isInCart.value ? 'opacity-90' : 'opacity-100',
-  buttonIcon: isInCart.value ? 'i-lucide-check' : 'i-lucide-plus',
-  buttonVariant: isInCart.value ? 'solid' : 'solid',
-  buttonColor: isInCart.value ? 'primary' : 'white',
-}))
 </script>
 
 <template>
-  <div class="group relative flex flex-col gap-3">
-    <div
-      class="relative aspect-square overflow-hidden rounded-2xl bg-gray-100 dark:bg-gray-800 transition-all duration-300 ring-2 ring-offset-2 dark:ring-offset-gray-900"
-      :class="[cardState.ringColor]"
-    >
-      <NuxtLink :to="`/p/${product.slug}`" class="block w-full h-full cursor-pointer">
+  <div class="group relative flex flex-col bg-white rounded-[2.5rem] p-4 transition-all duration-300 shadow-[0_15px_40px_-15px_rgba(0,0,0,0.1)] hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)] border-2 border-transparent hover:border-pink-100 active:scale-[0.98]">
+    
+    <div class="relative aspect-[1/1.1] overflow-hidden rounded-4xl bg-gray-50 border-4 border-white shadow-inner">
+      <NuxtLink :to="`/p/${product.slug}`" class="cursor-pointer">
         <SanityImage
           v-if="product.imageAssetId"
           :asset-id="product.imageAssetId"
-          auto="format"
-          :w="500"
-          :h="667"
-          fit="crop"
-          class="h-full w-full object-cover transition-transform duration-700 ease-out will-change-transform group-hover:scale-105"
-          :class="cardState.imageOpacity"
+          class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
         />
       </NuxtLink>
 
-      <span
-        v-if="product.badge"
-        class="absolute top-3 left-3 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider bg-white/90 dark:bg-black/80 backdrop-blur-sm rounded-md shadow-sm"
-      >
-        {{ product.badge }}
-      </span>
+      <div v-if="product.badge" class="absolute top-4 left-4">
+        <span class="bg-yellow-400 text-yellow-950 text-xs font-black px-4 py-1.5 rounded-full shadow-lg border-2 border-white uppercase -rotate-6 block">
+          {{ product.badge }}
+        </span>
+      </div>
 
       <UButton
-        :icon="isInFavorite ? 'i-fluent:heart-off-16-filled' : 'i-fluent-heart-24-filled'"
-        variant="outline"
-        color="neutral"
-        class="absolute top-5 right-3 p-2 transform -translate-y-2.5 transition-all rounded-full"
-        aria-label="Agregar a favoritos"
-        @click="isInFavorite ? favorite.remove(product._id) : favorite.add(product)"
+        :icon="isInFavorite ? 'i-ph-heart-fill' : 'i-ph-heart-bold'"
+        :color="isInFavorite ? 'primary' : 'neutral'"
+        variant="solid"
+        class="absolute top-4 right-4 rounded-full shadow-lg z-10 transition-transform hover:scale-125"
+        @click="favorite.add(product)"
       />
-
-      <div class="absolute bottom-3 right-3 z-10">
-        <UTooltip :text="isInCart ? 'Eliminar' : 'Agregar'" :popper="{ placement: 'left' }">
-          <UButton
-            :icon="isInCart ? 'i-fluent-delete-24-filled' : 'i-fluent-add-24-filled'"
-            :color="isInCart ? 'error' : 'primary'"
-            :variant="isInCart ? 'solid' : 'solid'"
-            size="lg"
-            class="shadow-lg transition-all duration-300 transform active:scale-90 hover:scale-110"
-            @click="isInCart ? cart.remove(product._id) : cart.add(product)"
-          />
-        </UTooltip>
-      </div>
     </div>
 
-    <div class="flex flex-col px-1">
-      <div class="flex justify-between items-start gap-4">
-        <div class="space-y-1">
-          <h3 class="font-medium text-gray-900 dark:text-white leading-tight group-hover:text-primary transition-colors cursor-pointer">
-            {{ product.name }}
-          </h3>
-          <p class="text-xs text-gray-500 dark:text-gray-400 font-medium">
-            {{ product.category }}
-          </p>
-        </div>
+    <div class="mt-5 flex-1 flex flex-col">
+      <div class="px-2 space-y-1">
+        <span class="inline-block text-[10px] font-black uppercase text-primary bg-pink-50 px-3 py-1 rounded-full tracking-widest">
+          {{ product.category }}
+        </span>
+        
+        <h3 class="font-bold text-gray-800 text-xl leading-snug line-clamp-2 min-h-12 group-hover:text-primary transition-colors">
+          {{ product.name }}
+        </h3>
+      </div>
 
-        <div class="flex flex-col items-end">
-          <span class="font-bold text-gray-900 dark:text-white whitespace-nowrap">
+      <div class="mt-auto px-2">
+        <div class="mb-4">
+          <span class="text-2xl font-black text-gray-900 tracking-tight">
             {{ currency.format(product.price) }}
           </span>
         </div>
+
+        <UButton
+          block
+          size="xl"
+          :color="isInCart ? 'success' : 'primary'"
+          variant="solid"
+          class="h-14 rounded-2xl font-black text-lg active:translate-y-1 transition-all"
+          :class="isInCart ? 'bg-green-500 hover:bg-green-600' : 'bg-primary hover:bg-pink-600'"
+          @click="isInCart ? cart.remove(product._id) : cart.add(product)"
+        >
+          <template #leading>
+            <UIcon :name="isInCart ? 'i-ph-check-circle-bold' : 'i-ph-shopping-cart-simple-bold'" class="text-2xl" />
+          </template>
+          {{ isInCart ? '¡En el Carrito!' : 'Lo quiero' }}
+        </UButton>
       </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+.group:hover img {
+  filter: brightness(1.05);
+}
+</style>

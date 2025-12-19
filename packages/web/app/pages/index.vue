@@ -12,93 +12,42 @@ const isMobileFiltersOpen = ref(false)
   <NuxtLayout>
     <Hero
       title="Pequeños Exploradores, Grandes Aventuras"
-      subtitle="Colección Kids Invierno 2025"
-      description="Prendas diseñadas para jugar, saltar y descubrir el mundo. Comodidad total y tejidos resistentes para su día a día."
+      subtitle="Colección Kids 2025"
+      description="Prendas diseñadas para jugar y descubrir el mundo con total comodidad."
     />
 
-    <UContainer id="shop-section" class="py-12">
-      <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4 border-b border-gray-100 dark:border-gray-800 pb-6">
-        <div>
-          <h2 class="text-3xl font-bold text-gray-900 dark:text-white">
-            Catálogo
-          </h2>
-          <p class="text-gray-500 mt-1">
-            Cantidad disponible: {{ products.length }}
-          </p>
-        </div>
+    <div class="bg-white dark:bg-gray-950 -mt-10 relative z-10 pt-10 pb-6 rounded-t-[3rem]">
+      <UContainer>
+       <div class="mb-12">
+    <ProductFilters />
+  </div>
 
-        <div class="flex items-center gap-3">
-          <USlideover v-model:open="isMobileFiltersOpen" side="bottom">
-            <UButton
-              class="lg:hidden"
-              icon="i-lucide-filter"
-              variant="solid"
-              @click="isMobileFiltersOpen = true"
-            >
-              Filtros
-            </UButton>
+        <USeparator class="mb-12" label="¡Explora el catálogo!" :ui="{ label: 'text-primary font-black uppercase tracking-[0.2em]' }" />
 
-            <template #body>
-              <UCard class="flex flex-col flex-1">
-                <template #header>
-                  <div class="flex items-center justify-between">
-                    <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">
-                      Filtros
-                    </h3>
-                    <UButton variant="ghost" icon="i-lucide-x" class="-my-1" @click="isMobileFiltersOpen = false" />
-                  </div>
-                </template>
-
-                <ProductFilters />
-
-                <template #footer>
-                  <div class="flex gap-4">
-                    <UButton block variant="outline" class="flex-1" @click="clearFilters">
-                      Limpiar
-                    </UButton>
-                    <UButton block class="flex-1" @click="isMobileFiltersOpen = false">
-                      Ver Resultados
-                    </UButton>
-                  </div>
-                </template>
-              </UCard>
-            </template>
-          </USlideover>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
-        <aside class="hidden lg:block lg:col-span-1">
-          <div class="sticky top-24">
-            <ProductFilters />
-          </div>
-        </aside>
-
-        <div class="lg:col-span-3">
-          <div v-if="status === 'pending'" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-            <div v-for="n in 6" :key="n">
-              <USkeleton class="h-[300px] w-full rounded-xl" />
-              <USkeleton class="h-4 w-3/4 mt-2" />
-              <USkeleton class="h-4 w-1/2 mt-2" />
-            </div>
-          </div>
-
-          <div v-else class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-            <ProductCard
-              v-for="product in products"
-              :key="product._id"
-              :product="product"
-            />
-          </div>
-
-          <div v-if="products.length > 0" class="mt-16 flex flex-col items-center gap-2">
-            <span class="text-sm text-gray-500">Mostrando {{ products.length }} resultados</span>
-            <UButton variant="outline" size="lg" class="px-8">
-              Cargar más
-            </UButton>
+        <div v-if="status === 'pending'" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+          <div v-for="n in 8" :key="n" class="space-y-4">
+            <USkeleton class="h-80 w-full rounded-4xl" />
+            <USkeleton class="h-6 w-3/4 mx-auto" />
           </div>
         </div>
-      </div>
-    </UContainer>
+
+        <div id="catalog" v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+          <ProductCard
+            v-for="product in products"
+            :key="product._id"
+            :product="product"
+          />
+        </div>
+
+        <div v-if="products.length === 0 && status !== 'pending'" class="text-center py-20 bg-gray-50 rounded-[3rem] border-4 border-dashed border-gray-200">
+          <UIcon name="i-ph-magnifying-glass-bold" class="text-6xl text-gray-300 mb-4" />
+          <h3 class="text-2xl font-black text-gray-800">¡Ups! No hay tesoros aquí</h3>
+          <p class="text-gray-500 mb-6 font-medium">Prueba buscando con otros filtros</p>
+          <UButton color="primary" variant="subtle" size="xl" class="rounded-full" @click="clearFilters">
+            Ver todo el catálogo
+          </UButton>
+        </div>
+      </UContainer>
+    </div>
   </NuxtLayout>
 </template>
