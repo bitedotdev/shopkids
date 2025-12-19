@@ -66,10 +66,11 @@ export function useCatalog() {
   }))
 
   const { data: categories } = useAsyncData('catalog-categories', () =>
-    sanity.fetch<{ _id: string, name: string, count: number }[]>(
+    sanity.fetch<Category[]>(
       groq`*[_type == "category"] | order(name asc) {
         _id,
         name,
+        image,
         "count": count(*[_type == "product" && references(^._id)])
       }`,
     ))

@@ -81,116 +81,90 @@ useSeoMeta({
 
 <template>
   <NuxtLayout>
-    <div v-if="pending" class="min-h-[60vh] flex items-center justify-center">
-      <UIcon name="i-lucide-loader-2" class="animate-spin w-10 h-10 text-gray-400" />
-    </div>
+    <div v-if="product" class="bg-linear-to-b from-white to-pink-50/30 pb-20">
+      <UContainer class="pt-8">
+        <UBreadcrumb :items="items" class="mb-8 font-bold italic text-pink-400" />
 
-    <div v-else-if="product" class="bg-white dark:bg-gray-950 pb-20">
-      <section class="max-w-7xl mx-auto px-4 lg:px-8 pt-6">
-        <div class="mb-6 lg:mb-10">
-          <UBreadcrumb :items="items" />
-        </div>
-
-        <div class="lg:grid lg:grid-cols-12 lg:gap-12">
-          <div class="lg:col-span-7 space-y-4">
-            <div class="flex lg:hidden overflow-x-auto snap-x snap-mandatory scrollbar-hide -mx-4 px-4 pb-4">
-              <div
-                v-for="(img, idx) in allImages"
-                :key="idx"
-                class="snap-center shrink-0 w-[85vw] sm:w-[60vw] aspect-square relative mr-4 last:mr-0 rounded-xl overflow-hidden"
-              >
-                <SanityImage
-                  :asset-id="img.asset._ref"
-                  auto="format"
-                  fit="crop"
-                  class="w-full h-full object-cover"
-                />
-              </div>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          <div class="lg:col-span-7 space-y-6">
+            <div class="relative aspect-4/5 rounded-[3rem] overflow-hidden shadow-2xl bg-white border-8 border-white">
+              <SanityImage
+                :asset-id="product.imageAssetId"
+                class="w-full h-full object-cover"
+              />
+              <UBadge v-if="product.badge" class="absolute top-6 left-6 px-4 py-2 rounded-2xl text-lg font-black bg-yellow-400 text-yellow-900 shadow-xl uppercase">
+                {{ product.badge }}
+              </UBadge>
             </div>
 
-            <div class="hidden lg:grid grid-cols-2 gap-4">
-              <div
-                v-for="(img, idx) in allImages"
-                :key="idx"
-                class="relative bg-gray-50 dark:bg-gray-900 rounded-2xl overflow-hidden cursor-zoom-in"
-                :class="{ 'col-span-2 aspect-4/5': idx === 0, 'aspect-3/4': idx > 0 }"
-              >
-                <SanityImage
-                  :asset-id="img.asset._ref"
-                  auto="format"
-                  :w="idx === 0 ? 1200 : 800"
-                  fit="crop"
-                  class="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
-                />
+            <div class="flex gap-4 overflow-x-auto pb-4 custom-scrollbar">
+              <div v-for="(img, idx) in allImages" :key="idx" class="w-32 h-32 shrink-0 rounded-[1.5rem] overflow-hidden border-4 border-white shadow-md hover:border-pink-400 transition-colors cursor-pointer">
+                <SanityImage :asset-id="img.asset._ref" class="w-full h-full object-cover" />
               </div>
             </div>
           </div>
 
-          <div class="lg:col-span-5 relative pt-6 lg:pt-0">
-            <div class="lg:sticky lg:top-24 space-y-8">
-              <div class="space-y-2">
-                <div class="flex items-center gap-2 text-sm text-gray-500 font-medium uppercase tracking-wider">
-                  <span v-for="cat in product.categories" :key="cat">{{ cat }}</span>
-                  <span v-if="product.gender !== 'none'" class="text-gray-300">•</span>
-                  <span v-if="product.gender !== 'none'">{{ product.gender }}</span>
+          <div class="lg:col-span-5 space-y-8">
+            <div class="bg-white p-8 rounded-[3rem] shadow-xl border border-pink-50">
+              <div class="space-y-4">
+                <div class="flex gap-2">
+                  <UBadge v-for="cat in product.categories" :key="cat" variant="subtle" size="lg" class="rounded-full font-bold uppercase tracking-widest px-4">
+                    {{ cat }}
+                  </UBadge>
                 </div>
-
-                <h1 class="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white leading-tight">
+                
+                <h1 class="text-4xl font-black text-gray-900 leading-tight">
                   {{ product.name }}
                 </h1>
 
-                <div class="flex items-baseline gap-4 pt-2">
-                  <span class="text-2xl font-bold text-gray-900 dark:text-white">
+                <div class="flex items-center gap-4">
+                  <span class="text-4xl font-black text-primary">
                     {{ currency.format(product.offer || product.price) }}
                   </span>
-                  <span v-if="product.offer" class="text-lg text-gray-400 line-through decoration-gray-400">
+                  <span v-if="product.offer" class="text-xl text-gray-400 line-through font-bold">
                     {{ currency.format(product.price) }}
                   </span>
-                  <UBadge v-if="product.offer" color="error" variant="soft" size="md">
-                    Oferta
-                  </UBadge>
                 </div>
               </div>
 
-              <USeparator />
-
-              <div class="prose prose-sm dark:prose-invert text-gray-600 dark:text-gray-300 leading-relaxed">
-                <p>{{ product.description || 'Sin descripción disponible para este producto.' }}</p>
+              <div class="mt-8 prose prose-p:text-gray-600 font-medium">
+                <p>{{ product.description }}</p>
               </div>
 
-              <div class="space-y-3 pt-4">
+              <div class="mt-10 space-y-4">
                 <UButton
                   block
                   size="xl"
-                  color="neutral"
-                  :variant="isInCart ? 'outline' : 'solid'"
-                  class="transition-all duration-300 rounded-full"
-                  :icon="isInCart ? 'i-lucide-check' : 'i-lucide-shopping-bag'"
+                  :color="isInCart ? 'success' : 'primary'"
+                  class="h-16 rounded-[1.5rem] text-xl font-black shadow-lg shadow-pink-200 transition-all active:scale-95"
+                  :icon="isInCart ? 'i-ph-check-circle-fill' : 'i-ph-shopping-bag-fill'"
                   @click="isInCart ? cart.remove(product._id) : cart.add(product)"
                 >
-                  {{ isInCart ? 'Quitar del Carrito' : 'Agregar al Carrito' }}
+                  {{ isInCart ? '¡Ya en el carrito!' : 'Agregar al carrito' }}
                 </UButton>
 
-                <p v-if="product.status === 'out of stock'" class="text-center text-red-500 font-medium text-sm">
-                  Producto agotado momentáneamente
-                </p>
-              </div>
-
-              <div class="pt-8 space-y-0 divide-y dark:divide-gray-800 border-t dark:border-gray-800">
-                <UAccordion
-                  :items="[
-                    { label: 'Envíos y Devoluciones', content: 'Envíos gratis a todo el país por compras superiores a $200.000. Tienes 30 días para devoluciones.' },
-                    { label: 'Composición y Cuidados', content: 'Lavar a máquina en frío. No usar blanqueador.' },
-                  ]"
-                  color="gray"
-                  variant="ghost"
-                  class="w-full"
-                />
+                <UButton
+                  block
+                  variant="outline"
+                  size="xl"
+                  color="success"
+                  class="h-16 rounded-[1.5rem] text-lg font-bold border-2"
+                  icon="i-ph-whatsapp-logo-fill"
+                  :to="`https://wa.me/573013726605?text=Hola! Me interesa este producto: ${product.name}`"
+                  target="_blank"
+                >
+                  Preguntar por WhatsApp
+                </UButton>
               </div>
             </div>
+
+            <UAccordion
+              :items="[{ label: '✨ Envíos y Cuidados', content: 'Cuidamos cada detalle para que llegue perfecto.' }]"
+              class="bg-white rounded-3xl p-2 shadow-sm border border-gray-100"              
+            />
           </div>
         </div>
-      </section>
+      </UContainer>
     </div>
   </NuxtLayout>
 </template>

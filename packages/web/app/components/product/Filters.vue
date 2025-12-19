@@ -1,82 +1,72 @@
 <script setup lang="ts">
-import type { AccordionItem } from '@nuxt/ui'
-import { GENDER_OPTIONS } from '@/composables/useCatalog'
-
-const { categories, filters, clearFilters, status } = useCatalog()
-
-const items: AccordionItem[] = [
-  {
-    label: 'Categoría',
-    slot: 'category',
-    value: 'category',
-  },
-  {
-    label: 'Género',
-    slot: 'gender',
-    value: 'gender',
-  },
-]
-
-const defaultOpenItems = ['category', 'gender']
+const { categories, filters } = useCatalog()
 
 function toggleSelection(list: string[], value: string, checked: boolean) {
   if (checked) {
-    if (!list.includes(value))
-      list.push(value)
-  }
-  else {
+    if (!list.includes(value)) list.push(value)
+  } else {
     const index = list.indexOf(value)
-    if (index > -1)
-      list.splice(index, 1)
+    if (index > -1) list.splice(index, 1)
   }
 }
+
 </script>
 
 <template>
-  <div class="space-y-6">
-    <div class="flex items-center justify-between">
-      <h2 class="font-bold text-xl text-gray-900 dark:text-white">
-        Filtros
-      </h2>
-      <UButton variant="link" size="xs" :disabled="status === 'pending'" @click.prevent="clearFilters">
-        Limpiar todo
-      </UButton>
-    </div>
-
-    <UAccordion
-      type="multiple"
-      :items="items"
-      :default-value="defaultOpenItems"
-    >
-      <template #category-body>
-        <div class="space-y-2">
-          <div v-if="!categories && status === 'pending'" class="space-y-2">
-            <USkeleton v-for="i in 3" :key="i" class="h-4 w-3/4" />
-          </div>
-
-          <div v-else class="flex flex-col gap-2 max-h-60 overflow-y-auto custom-scrollbar">
-            <UCheckbox
-              v-for="cat in categories"
-              :key="cat._id"
-              :label="`${cat.name} (${cat.count})`"
-              :model-value="filters.categories.includes(cat._id)"
-              @update:model-value="(v) => toggleSelection(filters.categories, cat._id, v as boolean)"
+  <div class="w-full space-y-10 py-4">  
+    <div class="relative">
+      <div class="flex items-center gap-6 overflow-x-auto pb-6 px-4 no-scrollbar">
+        <div 
+          v-for="cat in categories" 
+          :key="cat._id"
+          @click="toggleSelection(filters.categories, cat._id, !filters.categories.includes(cat._id))"
+          class="shrink-0 cursor-pointer group flex flex-col items-center gap-3"
+        >
+          <div 
+            class="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-4 transition-all duration-300 relative overflow-hidden shadow-md"
+            :class="[
+              filters.categories.includes(cat._id) 
+                ? 'border-primary-500 scale-110 shadow-primary-200 ring-4 ring-primary-100' 
+                : 'border-white bg-white group-hover:border-primary-200'
+            ]"
+          >
+            <SanityImage
+              v-if="cat.image?.asset?._ref"
+              :asset-id="cat.image.asset._ref"
+              :w="200"
+              :h="200"
+              auto="format"
+              fit="crop"
+              class="w-full h-full object-cover"
+              :class="{ 'grayscale-[0.5]': !filters.categories.includes(cat._id) }"
             />
-          </div>
-        </div>
-      </template>
+            <div v-else class="w-full h-full flex items-center justify-center bg-gray-100 text-gray-400">
+              <UIcon name="i-ph-star-bold" class="text-3xl" />
+            </div>
 
-      <template #gender-body>
-        <div class="space-y-2">
-          <UCheckbox
-            v-for="option in GENDER_OPTIONS"
-            :key="option.value"
-            :label="option.label"
-            :model-value="filters.genders.includes(option.value)"
-            @update:model-value="(v) => toggleSelection(filters.genders, option.value, v as boolean)"
-          />
+            <div 
+              v-if="filters.categories.includes(cat._id)"
+              class="absolute inset-0 bg-primary-500/20 flex items-center justify-center"
+            >
+              <div class="bg-primary-500 text-white rounded-full p-1 shadow-lg translate-y-8">
+                <UIcon name="i-ph-check-bold" />
+              </div>
+            </div>
+          </div>
+
+          <span 
+            class="text-xs font-black uppercase tracking-tighter text-center transition-colors"
+            :class="filters.categories.includes(cat._id) ? 'text-primary-600 scale-110' : 'text-gray-500'"
+          >
+            {{ cat.name }}
+          </span>
         </div>
-      </template>
-    </UAccordion>
+      </div>
+    </div>
   </div>
 </template>
+
+<style scoped>
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+</style>
