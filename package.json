@@ -1,24 +1,37 @@
 {
-  "name": "shopkids-monorepo",
+  "name": "shopkids",
   "type": "module",
-  "version": "1.0.0",
   "private": true,
-  "description": "Monorepo for Shopkids",
-  "author": "",
-  "license": "ISC",
-  "keywords": [],
   "scripts": {
-    "dev": "pnpm --recursive --parallel --stream dev",
-    "build": "pnpm --recursive build",
-    "dev-web": "pnpm --filter @shopkids/web dev",
-    "build-web": "pnpm --filter @shopkids/web build",
-    "dev-studio": "pnpm --filter @shopkids/node dev",
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
     "lint": "eslint .",
-    "fmt": "eslint . --fix"
+    "fmt": "eslint . --fix",
+    "clean": "rm -rf .nuxt dist node_modules"
+  },
+  "dependencies": {
+    "@nuxt/fonts": "0.12.1",
+    "@nuxt/image": "2.0.0",
+    "@nuxt/ui": "^4.1.0",
+    "@nuxtjs/sanity": "1.14.1",
+    "@pinia/nuxt": "0.5.4",
+    "@tailwindcss/vite": "^4.1.17",
+    "nuxt": "^4.2.1",
+    "pinia": "^3.0.4",
+    "pinia-plugin-persistedstate": "^4.7.1",
+    "tailwindcss": "^4.1.17",
+    "vue": "^3.5.22",
+    "vue-router": "^4.6.3"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^6.2.0",
-    "eslint": "^9.0.0",
-    "eslint-plugin-format": "^1.0.2"
+    "@antfu/eslint-config": "^6.7.3",
+    "@iconify-json/lucide": "^1.2.73",
+    "@iconify-json/ph": "^1.2.2",
+    "@nuxt/eslint": "1.10.0",
+    "eslint-plugin-format": "^1.1.0",
+    "prettier-plugin-tailwindcss": "^0.7.2"
   }
 }
