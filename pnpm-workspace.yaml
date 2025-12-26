@@ -1,2 +1,20 @@
 packages:
-  - 'packages/*'
+  - ./*
+  - ./node/*
+
+ignoreWorkspaceRootCheck: true
+
+onlyBuiltDependencies:
+  - '@parcel/watcher'
+  - esbuild
+  - sharp
+  - unrs-resolver
+  - vue-demi
+
+shamefullyHoist: true
+
+shellEmulator: true
+
+strictPeerDependencies: false
+
+trustPolicy: no-downgrade

@@ -1,0 +1,45 @@
+@import 'tailwindcss';
+@import '@nuxt/ui';
+
+@theme static {
+  --color-pink-50: #fff1f9;
+  --color-pink-100: #ffe3f4;
+  --color-pink-200: #ffc7ea;
+  --color-pink-300: #ff9bdd;
+  --color-pink-400: #ff5fcc;
+  --color-pink-500: #ff57bb;
+  --color-pink-600: #f12da1;
+  --color-pink-700: #d11c85;
+  --color-pink-800: #ad1a6e;
+  --color-pink-900: #901a5e;
+  --color-pink-950: #580835;
+
+  --color-cyan-50: #f0fbfb;
+  --color-cyan-100: #daf6f6;
+  --color-cyan-200: #bcefed;
+  --color-cyan-300: #8ee2e2;
+  --color-cyan-400: #75dddd;
+  --color-cyan-500: #53c8c8;
+  --color-cyan-600: #3da1a1;
+  --color-cyan-700: #358282;
+  --color-cyan-800: #2f6969;
+  --color-cyan-900: #2a5858;
+  --color-cyan-950: #134545;
+
+  --color-gray-50: #f9f9f9;
+  --color-gray-500: #dddddd;
+  --color-gray-950: #1a1a1a;
+  --color-salt-50: #ffffff;
+  --color-salt-500: #f8f8f8;
+  --color-salt-950: #e0e0e0;
+}
+
+:root {
+  --ui-primary: var(--color-pink-500);
+  --ui-secondary: var(--color-cyan-400);
+}
+
+.dark {
+  --ui-primary: var(--color-pink-400);
+  --ui-secondary: var(--color-cyan-300);
+}
