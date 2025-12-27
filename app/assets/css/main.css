@@ -39,7 +39,7 @@
   --ui-secondary: var(--color-cyan-400);
 }
 
-.dark {
-  --ui-primary: var(--color-pink-400);
-  --ui-secondary: var(--color-cyan-300);
+html,
+body {
+  @apply bg-white;
 }

@@ -1,9 +1,5 @@
-<script setup lang="ts">
-const route = useRoute()
-</script>
-
 <template>
-  <div class="min-h-screen bg-white dark:bg-gray-950">
+  <div class="min-h-screen bg-white">
     <AppHeader />
     <main>
       <slot />

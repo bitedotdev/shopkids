@@ -22,7 +22,7 @@ const whatsappUrl = computed(() => {
       :href="whatsappUrl"
       target="_blank"
       rel="noopener noreferrer"
-      class="group fixed bottom-6 right-6 z-100 flex items-center justify-center w-14 h-14 bg-[#25D366] text-white rounded-full shadow-lg shadow-green-500/30 hover:scale-110 hover:shadow-green-500/50 transition-all duration-300"
+      class="group fixed bottom-6 left-6 z-100 flex items-center justify-center w-14 h-14 bg-[#25D366] text-white rounded-full shadow-lg shadow-green-500/30 hover:scale-110 hover:shadow-green-500/50 transition-all duration-300"
       aria-label="Chat en WhatsApp"
     >
       <svg

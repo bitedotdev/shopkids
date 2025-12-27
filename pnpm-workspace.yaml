@@ -1,8 +1,12 @@
+ignoreWorkspaceRootCheck: true
+shamefullyHoist: true
+shellEmulator: true
+strictPeerDependencies: false
+trustPolicy: no-downgrade
+
 packages:
   - ./*
   - ./node/*
-
-ignoreWorkspaceRootCheck: true
 
 onlyBuiltDependencies:
   - '@parcel/watcher'
@@ -10,11 +14,3 @@ onlyBuiltDependencies:
   - sharp
   - unrs-resolver
   - vue-demi
-
-shamefullyHoist: true
-
-shellEmulator: true
-
-strictPeerDependencies: false
-
-trustPolicy: no-downgrade

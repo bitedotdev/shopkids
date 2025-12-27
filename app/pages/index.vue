@@ -10,7 +10,7 @@ const { products, status, clearFilters } = useCatalog()
   <NuxtLayout>
     <Hero />
 
-    <div class="bg-white dark:bg-gray-950 -mt-10 relative z-10 pt-10 pb-6 rounded-t-[3rem]">
+    <div class="bg-white -mt-10 relative z-10 pt-10 pb-6 rounded-t-[3rem]">
       <UContainer>
         <div class="mb-12">
           <ProductFilters />

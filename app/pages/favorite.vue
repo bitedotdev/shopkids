@@ -18,7 +18,7 @@ const breadcrumbItems = [
 
 <template>
   <NuxtLayout>
-    <div class="min-h-screen bg-pink-50/30 dark:bg-gray-950 py-12">
+    <div class="min-h-screen bg-pink-50/30 py-12">
       <div class="max-w-4xl mx-auto px-4 sm:px-6">
         <div class="mb-10 text-center sm:text-left">
           <UBreadcrumb :items="breadcrumbItems" class="justify-center sm:justify-start font-bold text-pink-400 mb-4" />
@@ -47,7 +47,7 @@ const breadcrumbItems = [
 
         <div
           v-else
-          class="text-center py-24 bg-white dark:bg-gray-900 rounded-[4rem] shadow-xl border-4 border-white relative overflow-hidden px-6"
+          class="text-center py-24 bg-white rounded-[4rem] shadow-xl border-4 border-white relative overflow-hidden px-6"
         >
           <div class="absolute -top-20 -right-20 w-64 h-64 bg-pink-50 rounded-full blur-3xl opacity-50" />
 
