@@ -135,7 +135,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
 <template>
   <NuxtLayout>
-    <div class="min-h-screen bg-blue-50/30 dark:bg-gray-950 py-12">
+    <div class="min-h-screen bg-white py-12">
       <div class="max-w-6xl mx-auto px-4 sm:px-6">
         <div class="mb-10">
           <UBreadcrumb :items="breadcrumbItems" class="font-bold text-primary mb-4" />
